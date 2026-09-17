@@ -1,0 +1,6 @@
+# 中间产物：头图 / 结尾图的渲染用 HTML 与沙箱探针图，跑 render.sh 会重新生成
+_build/
+.probe.png
+
+# macOS
+.DS_Store
