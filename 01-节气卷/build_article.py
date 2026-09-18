@@ -10,7 +10,7 @@
   · 章头：节气名（墨、大字距）+ 英文小字 + 金短线 + 三候 & 公历（金）+ 诗句（灰）
   · 层级只靠两样东西：金线 #C9A227 和字号
 
-改文案：动 ../_lib/copy.py
+改文案：动 ../_lib/demo_text.py
 改规格：动下面的 PAPER / P / 章头函数
 
 用法：
@@ -26,7 +26,7 @@ from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.abspath(os.path.join(HERE, "..", "_lib")))
-import copy as C  # noqa: E402  演示正文
+import demo_text as C  # noqa: E402  演示正文
 
 IMGDIR = os.path.join(HERE, "图")
 

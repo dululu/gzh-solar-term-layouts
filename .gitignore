@@ -2,5 +2,9 @@
 _build/
 .probe.png
 
+# Python 字节码
+__pycache__/
+*.pyc
+
 # macOS
 .DS_Store

@@ -11,7 +11,7 @@
          月白和雪白太浅，当文字色会看不见，所以标题色用同色系压暗一档的值
   · 金线 #B9963A 只用在序号和章头短线
 
-改文案：动 ../_lib/copy.py
+改文案：动 ../_lib/demo_text.py
 用法：
   python3 build_article.py          # 成稿-可复制.html
   python3 build_article.py --plain  # 成稿-可读.html
@@ -25,7 +25,7 @@ from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.abspath(os.path.join(HERE, "..", "_lib")))
-import copy as C  # noqa: E402
+import demo_text as C  # noqa: E402
 
 IMGDIR = os.path.join(HERE, "图")
 

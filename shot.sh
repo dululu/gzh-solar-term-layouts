@@ -12,8 +12,11 @@
 set -e
 
 SELF="$(cd "$(dirname "$0")" && pwd)"
-SUITE="${1:?用法: bash shot.sh <套目录名>}"
+# 可传套目录名（如 01-节气卷），也可以不带参数 —— 不带参数时就以脚本自己所在的
+# 目录为目标，方便把脚本连同「图/  成稿-可读.html」一起拷进某一篇成稿的目录里直接用。
+SUITE="${1:-.}"
 DIR="$SELF/$SUITE"
+TAG="$(basename "$(cd "$DIR" && pwd)")"
 # 挑一个装了 Pillow 的 python3（切片那步要用）。想指定就设 PY：
 #   PY=/path/to/python3 bash shot.sh 01-节气卷
 pick_py () {
@@ -25,7 +28,7 @@ pick_py () {
 }
 PY="$(pick_py)"
 CHROME="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
-TMP="/tmp/jieqi-${SUITE}"
+TMP="/tmp/jieqi-${TAG}"
 
 SEG=2200
 W=677
@@ -35,7 +38,15 @@ mkdir -p "$TMP"
 cp "$DIR/成稿-可读.html" "$TMP/page.html"
 cp -R "$DIR/图" "$TMP/图"
 cat >> "$TMP/page.html" <<'EOF'
-<script>document.title = document.documentElement.scrollHeight + 'px';</script>
+<script>
+/* 必须等 load 之后再量高。
+   写成解析期直接执行的话，此刻 <img> 都还是 0 高度，量到的页高会明显偏小，
+   截图就被截断在正文中途（而且要翻到末尾才看得出来，极易漏掉）。
+   --virtual-time-budget 结束时 dump-dom，那时 load 早已触发。 */
+window.addEventListener('load', function () {
+  document.title = document.documentElement.scrollHeight + 'px';
+});
+</script>
 EOF
 
 H=$("$CHROME" --headless=new --no-sandbox --disable-gpu --hide-scrollbars \

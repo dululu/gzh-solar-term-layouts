@@ -13,8 +13,11 @@
 set -e
 
 SELF="$(cd "$(dirname "$0")" && pwd)"
-SUITE="${1:?用法: bash render.sh <套目录名>}"
+# 可传套目录名（如 01-节气卷），也可以不带参数 —— 不带参数时就以脚本自己所在的
+# 目录为目标，方便把脚本连同「图/  gen_html.py」一起拷进某一篇成稿的目录里直接用。
+SUITE="${1:-.}"
 DIR="$SELF/$SUITE"
+TAG="$(basename "$(cd "$DIR" && pwd)")"
 # 挑一个装了 Pillow 的 python3。想指定就设 PY：
 #   PY=/path/to/python3 bash render.sh 01-节气卷
 pick_py () {
@@ -27,7 +30,7 @@ pick_py () {
 PY="$(pick_py)"
 CHROME="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
 
-[ -d "$DIR" ] || { echo "找不到套目录：$DIR" >&2; exit 1; }
+[ -d "$DIR" ] || { echo "找不到目录：$DIR" >&2; exit 1; }
 [ -x "$CHROME" ] || { echo "找不到 Chrome：$CHROME，可设 CHROME= 覆盖" >&2; exit 1; }
 
 echo "① 生成 HTML ..."
